@@ -585,7 +585,7 @@ class eZPublishedDateType extends eZDataType
     /*!
      \reimp
     */
-    function unserializeContentObjectAttribute( &$package, &$objectAttribute, $attributeNode )
+    function unserializeContentObjectAttribute( $package, $objectAttribute, $attributeNode )
     {
         $dateTimeNode = $attributeNode->elementByName( 'date_time' );
         if ( is_object( $dateTimeNode ) )
