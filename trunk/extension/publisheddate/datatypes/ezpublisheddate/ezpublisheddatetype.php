@@ -34,9 +34,6 @@
 
 */
 
-include_once( "kernel/classes/ezdatatype.php" );
-include_once( "lib/ezlocale/classes/ezdatetime.php" );
-
 define( 'EZ_DATATYPESTRING_PUBLISHEDDATE', 'ezpublisheddate' );
 define( 'EZ_DATATYPESTRING_PUBLISHEDDATE_DEFAULT', 'data_int1' );
 define( 'EZ_DATATYPESTRING_PUBLISHEDDATE_ADJUSTMENT_FIELD', 'data_text5' );
@@ -52,7 +49,7 @@ class eZPublishedDateType extends eZDataType
         $this->eZDataType( EZ_DATATYPESTRING_PUBLISHEDDATE, ezi18n( 'kernel/classes/datatypes', "Set Date and Time for Content", 'Datatype name' ),
                            array( 'serialize_supported' => false ) );
     }
-    function onPublish( &$contentObjectAttribute, &$contentObject, &$publishedNodes )
+    function onPublish( $contentObjectAttribute, $contentObject, $publishedNodes )
     {
         $obj = $contentObjectAttribute->attribute( 'object' );
         $obj->setAttribute( 'published', $contentObjectAttribute->attribute( 'data_int' ) );
@@ -61,7 +58,7 @@ class eZPublishedDateType extends eZDataType
     /*!
      Sets the default value.
     */
-    function initializeObjectAttribute( &$contentObjectAttribute, $currentVersion, &$originalContentObjectAttribute )
+    function initializeObjectAttribute( $contentObjectAttribute, $currentVersion, $originalContentObjectAttribute )
     {
         if ( $currentVersion != false )
         {
@@ -115,7 +112,7 @@ class eZPublishedDateType extends eZDataType
      Validates the input and returns true if the input was
      valid for this datatype.
     */
-    function validateObjectAttributeHTTPInput( &$http, $base, &$contentObjectAttribute )
+    function validateObjectAttributeHTTPInput( $http, $base, $contentObjectAttribute )
     {
         if ( $http->hasPostVariable( $base . '_datetime_year_' . $contentObjectAttribute->attribute( 'id' ) ) and
              $http->hasPostVariable( $base . '_datetime_month_' . $contentObjectAttribute->attribute( 'id' ) ) and
@@ -166,7 +163,7 @@ class eZPublishedDateType extends eZDataType
     /*!
      Fetches the http post var integer input and stores it in the data instance.
     */
-    function fetchObjectAttributeHTTPInput( &$http, $base, &$contentObjectAttribute )
+    function fetchObjectAttributeHTTPInput( $http, $base, $contentObjectAttribute )
     {
         if ( $http->hasPostVariable( $base . '_datetime_year_' . $contentObjectAttribute->attribute( 'id' ) ) and
              $http->hasPostVariable( $base . '_datetime_month_' . $contentObjectAttribute->attribute( 'id' ) ) and
@@ -205,7 +202,7 @@ class eZPublishedDateType extends eZDataType
     /*!
      \reimp
     */
-    function validateCollectionAttributeHTTPInput( &$http, $base, &$contentObjectAttribute )
+    function validateCollectionAttributeHTTPInput( $http, $base, $contentObjectAttribute )
     {
         if ( $http->hasPostVariable( $base . '_datetime_year_' . $contentObjectAttribute->attribute( 'id' ) ) and
              $http->hasPostVariable( $base . '_datetime_month_' . $contentObjectAttribute->attribute( 'id' ) ) and
@@ -256,7 +253,7 @@ class eZPublishedDateType extends eZDataType
     \reimp
     Fetches the http post variables for collected information
    */
-    function fetchCollectionAttributeHTTPInput( &$collection, &$collectionAttribute, &$http, $base, &$contentObjectAttribute )
+    function fetchCollectionAttributeHTTPInput( $collection, $collectionAttribute, $http, $base, $contentObjectAttribute )
     {
         if ( $http->hasPostVariable( $base . '_datetime_year_' . $contentObjectAttribute->attribute( 'id' ) ) and
              $http->hasPostVariable( $base . '_datetime_month_' . $contentObjectAttribute->attribute( 'id' ) ) and
@@ -337,7 +334,7 @@ class eZPublishedDateType extends eZDataType
         return $contentObjectAttribute->attribute( 'data_int' );
     }
 
-    function fromString( &$contentObjectAttribute, $string )
+    function fromString( $contentObjectAttribute, $string )
     {
         return $contentObjectAttribute->setAttribute( 'data_int', $string );
     }
@@ -345,7 +342,7 @@ class eZPublishedDateType extends eZDataType
     /*!
      Set class attribute value for template version
     */
-    function initializeClassAttribute( &$classAttribute )
+    function initializeClassAttribute( $classAttribute )
     {
         if ( $classAttribute->attribute( EZ_DATATYPESTRING_PUBLISHEDDATE_DEFAULT ) == null )
             $classAttribute->setAttribute( EZ_DATATYPESTRING_PUBLISHEDDATE_DEFAULT, 0 );
@@ -360,7 +357,7 @@ class eZPublishedDateType extends eZDataType
         return $dom;
     }
 
-    function &classAttributeContent( &$classAttribute )
+    function classAttributeContent( $classAttribute )
     {
         $xmlText = $classAttribute->attribute( 'data_text5' );
         if ( trim( $xmlText ) == '' )
@@ -368,8 +365,8 @@ class eZPublishedDateType extends eZDataType
             $classAttrContent = eZPublishedDateType::defaultClassAttributeContent();
             return $classAttrContent;
         }  
-        $doc =& eZPublishedDateType::parseXML( $xmlText );
-        $root =& $doc->root();
+        $doc = eZPublishedDateType::parseXML( $xmlText );
+        $root = $doc->root();
         $type = $root->elementByName( 'year' );
         if ( $type )
         {
@@ -408,7 +405,7 @@ class eZPublishedDateType extends eZDataType
     }
 
 
-    function fetchClassAttributeHTTPInput( &$http, $base, &$classAttribute )
+    function fetchClassAttributeHTTPInput( $http, $base, $classAttribute )
     {
         $default = $base . "_ezpublisheddate_default_" . $classAttribute->attribute( 'id' );
         if ( $http->hasPostVariable( $default ) )
@@ -448,9 +445,9 @@ class eZPublishedDateType extends eZDataType
     /*!
      Returns the date.
     */
-    function title( &$contentObjectAttribute )
+    function title( $contentObjectAttribute, $name = null )
     {
-        $locale =& eZLocale::instance();
+        $locale = eZLocale::instance();
         $retVal = $contentObjectAttribute->attribute( "data_int" ) == 0 ? '' : $locale->formatDateTime( $contentObjectAttribute->attribute( "data_int" ) );
         return $retVal;
     }
@@ -463,7 +460,7 @@ class eZPublishedDateType extends eZDataType
     /*!
      \reimp
     */
-    function sortKey( &$contentObjectAttribute )
+    function sortKey( $contentObjectAttribute )
     {
         return (int)$contentObjectAttribute->attribute( 'data_int' );
     }
@@ -479,7 +476,7 @@ class eZPublishedDateType extends eZDataType
     /*!
      \reimp
     */
-    function serializeContentClassAttribute( &$classAttribute, &$attributeNode, &$attributeParametersNode )
+    function serializeContentClassAttribute( $classAttribute, $attributeNode, $attributeParametersNode )
     {
         $defaultValue = $classAttribute->attribute( EZ_DATATYPESTRING_PUBLISHEDDATE_DEFAULT );
         switch ( $defaultValue )
@@ -523,10 +520,10 @@ class eZPublishedDateType extends eZDataType
     /*!
      \reimp
     */
-    function unserializeContentClassAttribute( &$classAttribute, &$attributeNode, &$attributeParametersNode )
+    function unserializeContentClassAttribute( $classAttribute, $attributeNode, $attributeParametersNode )
     {
         $defaultValue = '';
-        $defaultNode =& $attributeParametersNode->elementByName( 'default-value' );
+        $defaultNode = $attributeParametersNode->elementByName( 'default-value' );
         if ( $defaultNode )
         {
             $defaultValue = strtolower( $defaultNode->attributeValue( 'type' ) );
@@ -568,7 +565,7 @@ class eZPublishedDateType extends eZDataType
      \reimp
      \return a DOM representation of the content object attribute
     */
-    function serializeContentObjectAttribute( &$package, &$objectAttribute )
+    function serializeContentObjectAttribute( $package, $objectAttribute )
     {
         $node  = $this->createContentObjectAttributeDOMNode( $objectAttribute );
         $stamp = $objectAttribute->attribute( 'data_int' );
