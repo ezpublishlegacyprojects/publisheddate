@@ -315,10 +315,10 @@ class eZPublishedDateType extends eZDataType
 
     function &parseXML( $xmlText )
     {
-        include_once( 'lib/ezxml/classes/ezxml.php' );
-        $xml = new eZXML();
-        $dom =& $xml->domTree( $xmlText );
-        return $dom;
+        #include_once( 'lib/ezxml/classes/ezxml.php' );
+        $xml = new DOMDocument( '1.0', 'utf-8' );
+        $xml->loadXML( $xmlText );
+        return $xml;
     }
 
     function classAttributeContent( $classAttribute )
