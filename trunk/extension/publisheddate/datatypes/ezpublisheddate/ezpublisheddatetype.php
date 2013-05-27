@@ -10,7 +10,7 @@ class eZPublishedDateType extends eZDataType
 	const DEFAULT_ADJUSTMENT = 2;
     function eZPublishedDateType()
     {
-        $this->eZDataType( eZPublishedDateType::DATA_TYPE_STRING, ezi18n( 'kernel/classes/datatypes', "Set Date and Time for Content", 'Datatype name' ),
+        $this->eZDataType( eZPublishedDateType::DATA_TYPE_STRING, ezpI18n::tr( 'kernel/classes/datatypes', "Set Date and Time for Content", 'Datatype name' ),
                            array( 'serialize_supported' => false ) );
     }
     function onPublish( $contentObjectAttribute, $contentObject, $publishedNodes )
@@ -57,7 +57,7 @@ class eZPublishedDateType extends eZDataType
         $state = eZDateTimeValidator::validateDate( $day, $month, $year );
         if ( $state == eZInputValidator::STATE_INVALID )
         {
-            $contentObjectAttribute->setValidationError( ezi18n( 'kernel/classes/datatypes',
+            $contentObjectAttribute->setValidationError( ezpI18n::tr( 'kernel/classes/datatypes',
                                                                  'Date is not valid.' ) );
             return eZInputValidator::STATE_INVALID;
         }
@@ -65,7 +65,7 @@ class eZPublishedDateType extends eZDataType
         $state = eZDateTimeValidator::validateTime( $hour, $minute );
         if ( $state == eZInputValidator::STATE_INVALID )
         {
-            $contentObjectAttribute->setValidationError( ezi18n( 'kernel/classes/datatypes',
+            $contentObjectAttribute->setValidationError( ezpI18n::tr( 'kernel/classes/datatypes',
                                                                  'Time is not valid.' ) );
             return eZInputValidator::STATE_INVALID;
         }
@@ -108,7 +108,7 @@ class eZPublishedDateType extends eZDataType
                      ( !$classAttribute->attribute( 'is_information_collector' ) and
                        $contentObjectAttribute->validateIsRequired() ) )
                 {
-                    $contentObjectAttribute->setValidationError( ezi18n( 'kernel/classes/datatypes',
+                    $contentObjectAttribute->setValidationError( ezpI18n::tr( 'kernel/classes/datatypes',
                                                                          'Missing datetime input.' ) );
                     return eZInputValidator::STATE_INVALID;
                 }
@@ -197,7 +197,7 @@ class eZPublishedDateType extends eZDataType
                         $minute == '') or
                      $contentObjectAttribute->validateIsRequired() )
                 {
-                    $contentObjectAttribute->setValidationError( ezi18n( 'kernel/classes/datatypes',
+                    $contentObjectAttribute->setValidationError( ezpI18n::tr( 'kernel/classes/datatypes',
                                                                          'Missing datetime input.' ) );
                     return eZInputValidator::STATE_INVALID;
                 }
